@@ -7,7 +7,11 @@ public class Main {
         EventInputHandler eventInputHandler = new EventInputHandler(
                 ClassLoader.getSystemResource("log20161231/log20161231.csv").getPath());
 
-        eventInputHandler.sendEvents(100000, siddhiHandler.getSiddhiAppRuntime());
+        try {
+            eventInputHandler.sendEvents(1000000,1000000, siddhiHandler.getSiddhiAppRuntime());
+        } catch (ParameterException e) {
+            e.printStackTrace();
+        }
 
 
     }
