@@ -15,11 +15,11 @@ public class PerformanceTester {
         this.testName = testName;
     }
 
-    public void addEvent(long eventTimestamp) {
+    public synchronized void addEvent(long eventTimestamp) {
         long currentTime = System.currentTimeMillis();
 
         if (eventCountTotal == 0) {
-            veryFirstTime = eventTimestamp;
+            veryFirstTime = currentTime;
         }
 
         eventCountTotal++;

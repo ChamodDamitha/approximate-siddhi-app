@@ -18,19 +18,22 @@ public class TCPSessionWriter extends Thread {
 
     @Override
     public void run() {
-        BufferedReader inFromClient = null;
+        System.out.println("New TCP Writing Session Started...");
         try {
-            inFromClient = new BufferedReader(new InputStreamReader(TCPSessionWriter.this.connectionSocket.getInputStream()));
+            BufferedReader inFromClient = new BufferedReader(
+                    new InputStreamReader(TCPSessionWriter.this.connectionSocket.getInputStream()));
 
-            String clientSentence = null;
+            String clientSentence;
+            String[] msgStr;
+            String ip;
+            long eventTimestamp;
+            while ((clientSentence = inFromClient.readLine()) != null) {
+                msgStr = clientSentence.trim().split(",");
 
-            clientSentence = inFromClient.readLine();
-
-            String[] msgStr = clientSentence.trim().split(",");
-
-            String ip = msgStr[0];
-            long eventTimestamp = Long.valueOf(msgStr[1]);
-            eventHandler.sendEvent(new Object[]{ip, eventTimestamp});
+                ip = msgStr[0];
+                eventTimestamp = Long.valueOf(msgStr[1]);
+                eventHandler.sendEvent(new Object[]{ip, eventTimestamp});
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
