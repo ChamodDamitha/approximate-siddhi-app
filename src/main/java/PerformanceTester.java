@@ -1,53 +1,36 @@
 public class PerformanceTester {
     private String testName;
 
-    private int totalNoOfEventsArrived;
-    private long totalTimeElapsed;
-    private long startTime;
-    private long totalLatency;
+    private int eventCountTotal;
+    private long totalTimeSpent;
+    private long timeSpent;
+    private long veryFirstTime;
 
     private double averageThroughput;
     private double averageLatency;
 
     public PerformanceTester(String testName) {
-        this.totalNoOfEventsArrived = 0;
-        this.totalTimeElapsed = 0;
-        this.totalLatency = 0;
-
+        this.eventCountTotal = 0;
+        this.totalTimeSpent = 0;
         this.testName = testName;
     }
 
     public void addEvent(long eventTimestamp) {
         long currentTime = System.currentTimeMillis();
 
-        if (totalNoOfEventsArrived == 0) {
-            startTime = eventTimestamp;
+        if (eventCountTotal == 0) {
+            veryFirstTime = eventTimestamp;
         }
 
-        totalNoOfEventsArrived++;
-        totalTimeElapsed += (currentTime - eventTimestamp);
-        totalLatency += (currentTime - eventTimestamp);
+        eventCountTotal++;
+        timeSpent += (currentTime - eventTimestamp);
+        totalTimeSpent += timeSpent;
 
-        averageLatency = (1.0 * totalLatency) / totalNoOfEventsArrived;
-        averageThroughput = 1000.0 * totalNoOfEventsArrived / totalTimeElapsed;
+        averageThroughput = ((eventCountTotal * 1000) / (currentTime - veryFirstTime));
+        averageLatency = ((totalTimeSpent * 1.0) / eventCountTotal);
 
         printLogs();
-    }
 
-    public int getTotalNoOfEventsArrived() {
-        return totalNoOfEventsArrived;
-    }
-
-    public long getTotalTimeElapsed() {
-        return totalTimeElapsed;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public long getTotalLatency() {
-        return totalLatency;
     }
 
     public double getAverageThroughput() {
@@ -61,7 +44,7 @@ public class PerformanceTester {
     private void printLogs() {
         System.out.println(testName + ": Avg latency : " + averageLatency);
         System.out.println(testName + ": Avg throughput : " + averageThroughput);
-        System.out.println(testName + ": No of events arrived : " + totalNoOfEventsArrived);
-        System.out.println(testName + ": total time elapsed : " + totalTimeElapsed);
+        System.out.println(testName + ": No of events arrived : " + eventCountTotal);
+        System.out.println(testName + ": total time elapsed : " + totalTimeSpent);
     }
 }
