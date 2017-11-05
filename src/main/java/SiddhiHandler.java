@@ -9,9 +9,11 @@ public class SiddhiHandler {
     private PerformanceTester distinctCountTester;
     private PerformanceTester countTester;
 
+    private final int RECORD_WINDOW = 1000;
+
     public SiddhiHandler() {
-        countTester = new PerformanceTester("Count Test");
-        distinctCountTester = new PerformanceTester("Distinct Count Test");
+        countTester = new PerformanceTester("Count Test", RECORD_WINDOW);
+        distinctCountTester = new PerformanceTester("Distinct Count Test", RECORD_WINDOW);
         initExecutionPlan();
     }
 
@@ -32,9 +34,9 @@ public class SiddhiHandler {
             public void receive(Event[] events) {
 //                EventPrinter.print(events);
                 for (Event e : events) {
-                    System.out.println("ip : " + e.getData()[0] + ", distinct count : " + e.getData()[1]
-                            + ", timestamp : " + e.getData()[2]);
-                    distinctCountTester.addEvent((Long)e.getData()[2]);
+//                    System.out.println("ip : " + e.getData()[0] + ", distinct count : " + e.getData()[1]
+//                            + ", timestamp : " + e.getData()[2]);
+                    distinctCountTester.addEvent((Long) e.getData()[2]);
                 }
             }
         });
