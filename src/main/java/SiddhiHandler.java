@@ -19,7 +19,7 @@ public class SiddhiHandler {
         String definition = "@config(async = 'true') " +
                 "define stream " + Constants.INPUT_STREAM_NAME + " (ip string, timestamp long);";
 
-        String query = getApproximateDistinctCountQuery() + "\n" + getApproximateCountQuery();
+        String query = getExactDistinctCountQuery() + "\n" + getApproximateCountQuery();
 
         SiddhiManager siddhiManager = new SiddhiManager();
 

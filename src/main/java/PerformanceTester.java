@@ -25,11 +25,11 @@ public class PerformanceTester {
         }
 
         totalNoOfEventsArrived++;
-        totalTimeElapsed = (currentTime - startTime);
+        totalTimeElapsed += (currentTime - eventTimestamp);
         totalLatency += (currentTime - eventTimestamp);
 
-        averageLatency = (totalLatency / totalNoOfEventsArrived);
-        averageThroughput = 1000 * totalNoOfEventsArrived / totalTimeElapsed;
+        averageLatency = (1.0 * totalLatency) / totalNoOfEventsArrived;
+        averageThroughput = 1000.0 * totalNoOfEventsArrived / totalTimeElapsed;
 
         printLogs();
     }
