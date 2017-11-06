@@ -1,3 +1,6 @@
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
 public class PerformanceTester {
     private String testName;
 
@@ -18,6 +21,8 @@ public class PerformanceTester {
     private double averageThroughputWindow;
     private double averageLatencyWindow;
 
+    private Writer fstream;
+
     public PerformanceTester(String testName, int recordWindow) {
         this.eventCountTotal = 0;
         this.timeSpentTotal = 0;
@@ -27,6 +32,24 @@ public class PerformanceTester {
 
         this.testName = testName;
         this.recordWindow = recordWindow;
+
+        try {
+            fstream = new OutputStreamWriter(new FileOutputStream(new File(testName + "-results.csv")
+                    .getAbsoluteFile()), StandardCharsets.UTF_8);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            fstream.write("Number of events received in this window,Total number of events received," +
+                    "Throughput in this window (events/second), Entire throughput for the run (events/second), " +
+                    "Average latency per event in this window(ms), Entire Average latency per event (ms)," +
+                    "Elapsed time in this window(s), Total elapsed time(s)");
+            fstream.write("\r\n");
+            fstream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public synchronized void addEvent(long eventTimestamp) {
@@ -53,7 +76,7 @@ public class PerformanceTester {
             averageThroughputWindow = ((eventCountWindow * 1000) / (currentTime - veryFirstTimeWindow));
             averageLatencyWindow = ((timeSpentWindow * 1.0) / eventCountWindow);
 
-            printLogs();
+            writeLogs();
 
             eventCountWindow = 0;
             timeSpentWindow = 0;
@@ -62,14 +85,24 @@ public class PerformanceTester {
     }
 
 
-    private void printLogs() {
+    private void writeLogs() {
         System.out.println(testName + " > Total > Event count : " + eventCountTotal +
                 ", Avg latency : " + averageLatencyTotal
                 + ", Avg Throughput : " + averageThroughputTotal + ", Time spent : " + timeSpentTotal);
+//
+//        System.out.println(testName + " > Window > Event count : " + eventCountWindow +
+//                ", Avg latency : " + averageLatencyWindow
+//                + ", Avg Throughput : " + averageThroughputWindow + ", Time spent : " + timeSpentWindow);
 
-        System.out.println(testName + " > Window > Event count : " + eventCountWindow +
-                ", Avg latency : " + averageLatencyWindow
-                + ", Avg Throughput : " + averageThroughputWindow + ", Time spent : " + timeSpentWindow);
-
+        try {
+            fstream.write(eventCountWindow + "," + eventCountTotal + "," +
+                    averageThroughputWindow + "," + averageThroughputTotal + "," +
+                    averageLatencyWindow + "," + averageLatencyTotal + "," +
+                    (timeSpentWindow / 1000.0) + "," + (timeSpentTotal / 1000.0));
+            fstream.write("\r\n");
+            fstream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

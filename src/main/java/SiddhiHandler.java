@@ -9,9 +9,7 @@ public class SiddhiHandler {
     private PerformanceTester distinctCountTester;
     private PerformanceTester countTester;
 
-    private final int RECORD_WINDOW = 1000;
-
-    public SiddhiHandler() {
+    public SiddhiHandler(int RECORD_WINDOW) {
         countTester = new PerformanceTester("Count Test", RECORD_WINDOW);
         distinctCountTester = new PerformanceTester("Distinct Count Test", RECORD_WINDOW);
         initExecutionPlan();

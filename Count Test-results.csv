@@ -1,0 +1,1 @@
+Number of events received in this window,Total number of events received,Throughput in this window (events/second), Entire throughput for the run (events/second), Average latency per event in this window(ms), Entire Average latency per event (ms),Elapsed time in this window(s), Total elapsed time(s)
