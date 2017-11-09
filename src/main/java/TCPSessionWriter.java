@@ -26,13 +26,13 @@ public class TCPSessionWriter extends Thread {
             String clientSentence;
             String[] msgStr;
             String ip;
-            long eventTimestamp;
+//            long eventTimestamp;
             while ((clientSentence = inFromClient.readLine()) != null) {
                 msgStr = clientSentence.trim().split(",");
 
                 ip = msgStr[0];
-                eventTimestamp = Long.valueOf(msgStr[1]);
-                eventHandler.sendEvent(new Object[]{ip, eventTimestamp});
+//                eventTimestamp = Long.valueOf(msgStr[1]);
+                eventHandler.sendEvent(new Object[]{ip, System.currentTimeMillis()});
             }
 
         } catch (IOException e) {

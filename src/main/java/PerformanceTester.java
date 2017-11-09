@@ -6,15 +6,16 @@ public class PerformanceTester {
 
     private int recordWindow;
 
-    private int eventCountTotal;
+    private long eventCountTotal;
     private long timeSpentTotal;
     private long veryFirstTime;
+    private long actualTotalTime;
 
     private double averageThroughputTotal;
     private double averageLatencyTotal;
 
 
-    private int eventCountWindow;
+    private long eventCountWindow;
     private long timeSpentWindow;
     private long veryFirstTimeWindow;
 
@@ -44,7 +45,7 @@ public class PerformanceTester {
             fstream.write("Number of events received in this window,Total number of events received," +
                     "Throughput in this window (events/second), Entire throughput for the run (events/second), " +
                     "Average latency per event in this window(ms), Entire Average latency per event (ms)," +
-                    "Elapsed time in this window(s), Total elapsed time(s)");
+                    " Total elapsed time(s)");
             fstream.write("\r\n");
             fstream.flush();
         } catch (IOException e) {
@@ -69,7 +70,9 @@ public class PerformanceTester {
         timeSpentTotal += (currentTime - eventTimestamp);
 
         averageThroughputTotal = ((eventCountTotal * 1000) / (currentTime - veryFirstTime));
+
         averageLatencyTotal = ((timeSpentTotal * 1.0) / eventCountTotal);
+        actualTotalTime = currentTime - veryFirstTime;
 
         if (eventCountTotal % recordWindow == 0) {
 
@@ -88,7 +91,7 @@ public class PerformanceTester {
     private void writeLogs() {
         System.out.println(testName + " > Total > Event count : " + eventCountTotal +
                 ", Avg latency : " + averageLatencyTotal
-                + ", Avg Throughput : " + averageThroughputTotal + ", Time spent : " + timeSpentTotal);
+                + ", Avg Throughput : " + averageThroughputTotal + ", Time spent : " + (actualTotalTime / 1000.0));
 //
 //        System.out.println(testName + " > Window > Event count : " + eventCountWindow +
 //                ", Avg latency : " + averageLatencyWindow
@@ -98,7 +101,7 @@ public class PerformanceTester {
             fstream.write(eventCountWindow + "," + eventCountTotal + "," +
                     averageThroughputWindow + "," + averageThroughputTotal + "," +
                     averageLatencyWindow + "," + averageLatencyTotal + "," +
-                    (timeSpentWindow / 1000.0) + "," + (timeSpentTotal / 1000.0));
+                    (actualTotalTime / 1000.0));
             fstream.write("\r\n");
             fstream.flush();
         } catch (IOException e) {
