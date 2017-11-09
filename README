@@ -2,4 +2,4 @@
 2. Copy "approximateApp-1.0-SNAPSHOT-jar-with-dependencies.jar" inside the target directory , "siddhi-execution-approximate-1.0.3-SNAPSHOT.jar" and "run.sh" to another directory.
 3. Enter "sudo chmod a+x run.sh" in a terminal.
 4. Change the variable "IS_APPROXIMATE" to "True/False" to change the calculation type to "Approximate/exact".
-4. Run the "run.sh".
+5. Run the "run.sh".
