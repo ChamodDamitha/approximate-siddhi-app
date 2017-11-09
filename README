@@ -1,4 +1,4 @@
 1. Clone the project and enter "mvn clean install" in a terminal
 2. Copy "approximateApp-1.0-SNAPSHOT-jar-with-dependencies.jar" inside the target directory , "siddhi-execution-approximate-1.0.3-SNAPSHOT.jar" and "run.sh" to another directory.
 3. Enter "sudo chmod a+x run.sh" in a terminal
-3. Run the "run.sh"
+4. Run the "run.sh"
